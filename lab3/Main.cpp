@@ -32,13 +32,13 @@ void masterTask(int proc_num) {
   int* tmp_buf = new int[proc_num-1];
 
   for (int i = 0; i < M; i++) {
-    memset(msg_out, i, proc_num * sizeof(int)); // Òàê è çàäóìàíî, ÷òîáû öèêëû íå äåëàòü
+    memset(msg_out, i, proc_num * sizeof(int)); // Ð¢Ð°Ðº Ð¸ Ð·Ð°Ð´ÑƒÐ¼Ð°Ð½Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ñ†Ð¸ÐºÐ»Ñ‹ Ð½Ðµ Ð´ÐµÐ»Ð°Ñ‚ÑŒ
     MPI_Scatter(msg_out, 1, MPI_INT, tmp_buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
     LOG(INFO, "Master: message %d sent by bcast", msg_out[0]);
     MPI_Gather(tmp_buf, 1, MPI_INT, msg_in, 1, MPI_INT, 0, MPI_COMM_WORLD);
     LOG(INFO, "Master: Replies from all slaves received (iteration %d, sum %d)", i, msg_in[0]);
   }
-  memset(msg_out, -1, proc_num * sizeof(int)); // Òàê è çàäóìàíî, âñå ðàáîòàåò, òàê êàê -1 = fff...
+  memset(msg_out, -1, proc_num * sizeof(int)); // Ð¢Ð°Ðº Ð¸ Ð·Ð°Ð´ÑƒÐ¼Ð°Ð½Ð¾, Ð²ÑÐµ Ñ€Ð°Ð±Ð¾Ñ‚Ð°ÐµÑ‚, Ñ‚Ð°Ðº ÐºÐ°Ðº -1 = fff...
   MPI_Scatter(msg_out, 1, MPI_INT, tmp_buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
   LOG(INFO, "Master: finish signal sent");
   return;
